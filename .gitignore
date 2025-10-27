@@ -1,0 +1,65 @@
+# ========== Backend: Java / Spring Boot / Gradle ==========
+
+# Gradle build files
+.gradle/
+build/
+out/
+
+# Gradle Wrapper jar file
+gradle-wrapper.jar
+
+# Gradle logs
+gradle.log
+
+# Eclipse / IntelliJ project files
+*.iml
+*.ipr
+*.iws
+.idea/
+*.classpath
+*.project
+
+# Maven specific files (if any)
+target/
+
+# H2 database files
+*.h2.db
+
+# Spring Boot specific
+spring.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# ========== Frontend: React / Vite ==========
+
+# Node dependencies
+frontend/node_modules/
+
+# Vite build output
+frontend/dist/
+
+# Environment variables
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Editor folders and files
+.vscode/
+.idea/
+
+# System files
+*.log
+
+# ========== Miscellaneous ==========
+
+# Ignore IDE/editor folders in the root
+.idea/
+.vscode/
+*.swp
