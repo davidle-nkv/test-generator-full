@@ -1,0 +1,17 @@
+/* For Webkit Browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; /* you can match your UI color */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d8d8d8; /* scroll thumb color */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

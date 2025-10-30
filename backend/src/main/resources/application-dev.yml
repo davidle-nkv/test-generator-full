@@ -1,0 +1,5 @@
+github:
+  owner: ${GITHUB_OWNER:davidle-nkv}
+  repo: ${GITHUB_REPO:qa-automation-code}
+  branch: ${GITHUB_BRANCH:main}
+  pat: ${GITHUB_PAT}

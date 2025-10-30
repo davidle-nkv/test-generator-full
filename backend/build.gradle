@@ -1,12 +1,38 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.6'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.3.2'
+    id 'io.spring.dependency-management' version '1.1.5'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+group = 'com.nakivo'
+sourceCompatibility = 21
+targetCompatibility = 21
+
+// --- Versioning logic ---
+def major = 1
+def minor = 0
+def buildNum = System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"
+def commit = System.getenv("GIT_COMMIT")?.take(7) ?: "local"
+
+version = "${major}.${minor}.${buildNum}-${commit}"
+
+bootJar {
+    archiveFileName = "test-generator-${version}.jar"
+    manifest {
+        attributes 'Implementation-Version': version
+    }
+}
+
+jar {
+    enabled = false
+}
+
+// --- Custom tasks ---
+tasks.register('printVersion') {
+    doLast {
+        println "Building version: ${version}"
+    }
+}
 
 repositories {
     mavenCentral()
@@ -14,6 +40,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

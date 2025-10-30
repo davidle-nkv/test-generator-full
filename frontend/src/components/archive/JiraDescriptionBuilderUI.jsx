@@ -5,12 +5,24 @@ import { FiSearch, FiCopy, FiTrash2, FiMove, FiFileText } from "react-icons/fi";
 
 /* Example steps (replace with your dynamic source later) */
 const STEPS_MAP = [
-    { id: "s1", text: "Open application homepage" },
-    { id: "s2", text: "Login with valid credentials" },
+    { id: "s1", text: "Open application homepage, Open application homepage, Open application homepage, Open application homepage" },
+    { id: "s2", text: "Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials" },
     { id: "s3", text: "Navigate to user settings" },
     { id: "s4", text: "Click save button" },
     { id: "s5", text: "Verify success message" },
-    { id: "s6", text: "Logout user" }
+    { id: "s6", text: "Logout user" },
+    { id: "s11", text: "Open application homepage, Open application homepage, Open application homepage, Open application homepage" },
+    { id: "s12", text: "Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials" },
+    { id: "s13", text: "Navigate to user settings" },
+    { id: "s14", text: "Click save button" },
+    { id: "s15", text: "Verify success message" },
+    { id: "s16", text: "Logout user" },
+    { id: "s21", text: "Open application homepage, Open application homepage, Open application homepage, Open application homepage" },
+    { id: "s22", text: "Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials, Login with valid credentials" },
+    { id: "s23", text: "Navigate to user settings" },
+    { id: "s24", text: "Click save button" },
+    { id: "s25", text: "Verify success message" },
+    { id: "s26", text: "Logout user" }
 ];
 
 function reorder(list, startIndex, endIndex) {

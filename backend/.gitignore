@@ -1,0 +1,77 @@
+# ------------------------
+# Java
+# ------------------------
+*.class
+*.log
+*.ctxt
+hs_err_pid*
+replay_pid*
+*.hprof
+*.out
+
+# ------------------------
+# Gradle
+# ------------------------
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local Gradle properties (can contain credentials, machine-specific settings)
+gradle.properties
+
+# ------------------------
+# IntelliJ IDEA
+# ------------------------
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# IntelliJ output directories
+out/
+classes/
+logs/
+screenshots/
+videos/
+test-reports/
+propertyfiles/
+pipeline/
+.playwright-mcp/
+src/test/resources/
+aicontext/
+
+# ------------------------
+# Eclipse (if sometimes used)
+# ------------------------
+.project
+.classpath
+.settings/
+
+# ------------------------
+# NetBeans (if sometimes used)
+# ------------------------
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# ------------------------
+# OS Specific
+# ------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~

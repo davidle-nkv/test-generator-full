@@ -1,0 +1,10 @@
+id: TC_001
+title: Create and run VMware backup job to local repository successfully
+groups: DIET_DEBUG, regression
+category: VMwareBackup
+feature: VMWARE
+step 1: Create VMware Backup job
+step 2: Run job
+step 3: Wait for job to finish
+step 4: Verify backup object
+step 5: Remove the job

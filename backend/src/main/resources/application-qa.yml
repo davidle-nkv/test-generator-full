@@ -1,0 +1,5 @@
+github:
+  owner: ${GITHUB_OWNER:bryanphan}
+  repo: ${GITHUB_REPO:NakivoMainProjects}
+  branch: ${GITHUB_BRANCH:staging_n8n}
+  pat: ${GITHUB_PAT}

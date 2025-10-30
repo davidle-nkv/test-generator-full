@@ -1,0 +1,25 @@
+# pattern,methodCall
+create vmware backup job,vmwareBackupPage().createBackupJob(testData);
+create proxmox backup job,proxmoxBackupPage().createBackupJob(testData);
+run job,dashboardPage().runJob(testData);
+wait for job to finish, dashboardPage().waitJobRunComplete(testData.getJobName(), DEFAULT_TIMEOUT);
+verify backup object, "vmwareBackupPage().validateCreatedBackupJob(testData);"
+remove the job,"dashboardPage().removeJob(testData.getJobName(), testData.getDeleteMode());"
+wait for it to finish, dashboardPage().validateFailTestCase(testData.getJobName());
+validate vmware backup HodAdd mode,	vmwareBackupPage().validateBackupJobWithHotAddMode(testData);
+go to dashboard page, navigationPage().gotoDashboardPage();
+validate vmware backup SAN mode, vmwareBackupPage().validateBackupJobWithSANMode(testData);
+validate vmware backup LAN mode, vmwareBackupPage().validateBackupJobWithLANMode(testData);
+select vmware job type, vmwareBackupPage().selectBackupSource(testData);
+select vmware destination, vmwareBackupPage().selectBackupDestination(testData);
+select vmware schedule, vmwareBackupPage().selectBackupSchedule(testData);
+select vmware retention, vmwareBackupPage().selectBackupRetention(testData);
+select vmware options, vmwareBackupPage().backupOptionEncryption(testData, password);
+remove reocvery point from repo, vmwareBackupPage().apiRemoveBackupObject(testData.getRepoName());
+remvoe backup keep recovery point, dashboardPage().removeJob(testData.getJobName(), KEEP_BACKUP);
+create backup to existing backup, vmwareBackupPage().createExistBackupJobs(testData);
+validate create backup exist, vmwareBackupPage().validateCreatedExistBackupJob(testData, 1);
+create vmware replica job, vmwareReplicationPage.createReplicationJobs(testData);
+verify replica job, vmwareReplicationPage.validateReplicationJobs();
+create recovery job, vmwareRecoveryPage.createRecoveryJobs(testData, platform);
+run recovery job, dashboardPage().runJob(testData.getRecoverJobName(), testData.getJobScope());
