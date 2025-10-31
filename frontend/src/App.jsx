@@ -8,11 +8,13 @@ export default function App(){
   // const [items, setItems] = useState([]);
   // const [name, setName] = useState('');
   //
+  // // Run once on component mount
   // useEffect(()=>{ fetchItems() }, []);
   //
   // async function fetchItems(){
   //   const res = await fetch('/api/items');
   //   const data = await res.json();
+  //   console.log('Fetched items:', data);
   //   setItems(data);
   // }
   //

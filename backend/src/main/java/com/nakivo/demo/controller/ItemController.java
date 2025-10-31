@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.nakivo.demo.controller;
 
-import com.example.demo.model.Item;
-import com.example.demo.repository.ItemRepository;
+import com.nakivo.demo.model.Item;
+import com.nakivo.demo.repository.ItemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

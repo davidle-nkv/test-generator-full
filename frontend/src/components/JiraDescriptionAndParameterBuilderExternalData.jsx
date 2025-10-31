@@ -30,12 +30,12 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
             try {
                 setLoading(true);
                 const [stepsResp, paramsResp] = await Promise.all([
-                    fetch("/public/step-mappings.csv"),
-                    fetch("/public/test-data-fields.csv")
+                    fetch("/api/files/step-mappings.csv"),
+                    fetch("/api/files/test-data-fields.csv")
                 ]);
 
-                if (!stepsResp.ok) throw new Error("Failed to fetch step-mapping.csv");
-                if (!paramsResp.ok) throw new Error("Failed to fetch parameters.csv");
+                if (!stepsResp.ok) throw new Error("Failed to fetch step-mappings.csv");
+                if (!paramsResp.ok) throw new Error("Failed to fetch test-data-fields.csv");
 
                 const stepsText = await stepsResp.text();
                 const paramsText = await paramsResp.text();
