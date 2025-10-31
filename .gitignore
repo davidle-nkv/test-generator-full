@@ -32,10 +32,6 @@ spring.log
 .DS_Store
 Thumbs.db
 
-# ========== Backend: Spring Boot ==========
-backend/src/main/resources/application-dev.yml
-backend/src/main/resources/application-qa.yml
-
 # ========== Frontend: React / Vite ==========
 
 # Node dependencies
