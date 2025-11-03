@@ -26,6 +26,15 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
     const [updating, setUpdating] = useState(false);
     const [updateMsg, setUpdateMsg] = useState(null);
 
+    // new metadata fields
+    const [meta, setMeta] = useState({
+        id: "",
+        title: "",
+        groups: "",
+        category: "",
+        feature: ""
+    });
+
     /* Get list of steps and list of parameters */
     useEffect(() => {
         // load both CSVs in parallel
@@ -34,11 +43,11 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                 setLoading(true);
                 const [stepsResp, paramsResp] = await Promise.all([
                     fetch("/api/files/step-mappings.csv"),
-                    fetch("/api/files/test-data-fields.csv")
+                    fetch("/api/files/test-data-field-description.csv")
                 ]);
 
                 if (!stepsResp.ok) throw new Error("Failed to fetch step-mappings.csv");
-                if (!paramsResp.ok) throw new Error("Failed to fetch test-data-fields.csv");
+                if (!paramsResp.ok) throw new Error("Failed to fetch test-data-field-description.csv");
 
                 const stepsText = await stepsResp.text();
                 const paramsText = await paramsResp.text();
@@ -137,7 +146,20 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
         setSelected((prev) => prev.map((s, i) => (i === stepIndex ? { ...s, parameters: s.parameters.filter((p) => p.id !== paramId) } : s)));
     };
 
-    const description = useMemo(() => selected.map((s, i) => `${i + 1}. ${s.text}`).join("\n"), [selected]);
+    // const description = useMemo(() => selected.map((s, i) => `${i + 1}. ${s.text}`).join("\n"), [selected]);
+    // Include meta fields at the top of description
+    const description = useMemo(() => {
+        const metaHeader = [
+            `ID: ${meta.id || "-"}`,
+            `Title: ${meta.title || "-"}`,
+            `Groups: ${meta.groups || "-"}`,
+            `Category: ${meta.category || "-"}`,
+            `Feature: ${meta.feature || "-"}`
+        ].join("\n");
+
+        const stepLines = selected.map((s, i) => `Step ${i + 1}: ${s.text}`).join("\n");
+        return `${metaHeader}\n\n${stepLines}`;
+    }, [selected, meta]);
 
     const jsonOutput = useMemo(() => {
         const arr = selected.map((s) => {
@@ -238,6 +260,28 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
 
             {loading && <div className="text-sm text-gray-500">Loading steps and parameters...</div>}
             {error && <div className="text-sm text-red-600">Error: {error}</div>}
+
+            <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
+                    <label>Metadata</label>
+                </div>
+                {/* Metadata fields */}
+                <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+                    {/*<h2 className="text-sm font-medium text-gray-800 mb-3">Metadata</h2>*/}
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+                        {["id", "title", "groups", "category", "feature"].map((key) => (
+                            <input
+                                key={key}
+                                type="text"
+                                value={meta[key]}
+                                onChange={(e) => setMeta({ ...meta, [key]: e.target.value })}
+                                placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:border-blue-500 focus:ring focus:ring-blue-100"
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
                 {/* LEFT Pane */}

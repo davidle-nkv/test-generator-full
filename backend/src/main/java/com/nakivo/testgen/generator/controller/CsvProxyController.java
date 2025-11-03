@@ -20,9 +20,9 @@ public class CsvProxyController {
 
     @GetMapping(value = "/{filename}", produces = "text/csv")
     public ResponseEntity<String> getCsv(@PathVariable String filename) {
-        if (!filename.equals("step-mappings.csv") && !filename.equals("test-data-fields.csv")) {
-            return ResponseEntity.badRequest().build();
-        }
+//        if (!filename.equals("step-mappings.csv") && !filename.equals("test-data-fields.csv")) {
+//            return ResponseEntity.badRequest().build();
+//        }
 
         String csvData = csvProxyService.getCsvContent(filename);
         return ResponseEntity.ok(csvData);

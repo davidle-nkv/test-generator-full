@@ -6,6 +6,7 @@ public class TestGenRequest {
     private String user;
     private String summary;
     private String description; // the input file text
+    private String testData;
 
     // Getters and Setters
     public String getJiranumber() { return jiranumber; }
@@ -19,4 +20,8 @@ public class TestGenRequest {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getTestData() { return testData; }
+    public void setTestData(String testData) { this.testData = testData; }
+
 }
