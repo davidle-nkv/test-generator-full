@@ -1,8 +1,7 @@
-package com.nakivo.testgen.service;
+package com.nakivo.testgen.generator.service;
 
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 
 @Service

@@ -1,4 +1,4 @@
-package com.nakivo.testgen.service;
+package com.nakivo.testgen.generator.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Select from "react-select";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { FiSearch, FiCopy, FiTrash2, FiMove, FiFileText, FiPlus } from "react-icons/fi";
+import { FiSearch, FiCopy, FiTrash2, FiMove, FiFileText, FiPlus, FiSend } from "react-icons/fi";
 
 let PARAM_ID_COUNTER = 1000;
 function nextParamId() {
@@ -22,6 +22,9 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
     const [selected, setSelected] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [jiraTicket, setJiraTicket] = useState("");
+    const [updating, setUpdating] = useState(false);
+    const [updateMsg, setUpdateMsg] = useState(null);
 
     /* Get list of steps and list of parameters */
     useEffect(() => {
@@ -164,6 +167,34 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
         }
     };
 
+    const handleJiraUpdate = async () => {
+        if (!jiraTicket.trim()) {
+            setUpdateMsg("Please enter a Jira ticket number.");
+            return;
+        }
+        try {
+            setUpdating(true);
+            setUpdateMsg("Updating Jira...");
+            const resp = await fetch("/api/jira/update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ticket: jiraTicket.trim(),
+                    description,
+                    json: jsonOutput
+                })
+            });
+            if (!resp.ok) throw new Error(`Jira update failed: ${resp.status}`);
+            const data = await resp.json();
+            setUpdateMsg(`Jira updated successfully: ${data.status || "OK"}`);
+        } catch (err) {
+            console.error(err);
+            setUpdateMsg(`Jira update failed: ${err.message}`);
+        } finally {
+            setUpdating(false);
+        }
+    };
+
     const customStyles = {
         control: (base, state) => ({
             ...base,
@@ -184,6 +215,26 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                 <h1 className="text-2xl font-semibold text-gray-900">Jira Description Builder (CSV-backed)</h1>
                 <p className="text-sm text-gray-500 mt-1">Steps are loaded from <code>/step-mapping.csv</code>. Parameter templates are loaded from <code>/parameters.csv</code>. Add parameters from templates or create custom ones.</p>
             </header>
+
+            {/* Jira ticket input */}
+            <div className="mb-6 flex items-center gap-3">
+                <input
+                    type="text"
+                    value={jiraTicket}
+                    onChange={(e) => setJiraTicket(e.target.value)}
+                    placeholder="Enter Jira Ticket Number (e.g. QA-123)"
+                    className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:border-blue-500 focus:ring focus:ring-blue-100"
+                />
+                <button
+                    onClick={handleJiraUpdate}
+                    disabled={updating}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition disabled:opacity-50"
+                >
+                    <FiSend className="w-4 h-4" />{" "}
+                    {updating ? "Updating..." : "Update Jira"}
+                </button>
+            </div>
+            {updateMsg && <div className="text-sm text-gray-600 mb-4">{updateMsg}</div>}
 
             {loading && <div className="text-sm text-gray-500">Loading steps and parameters...</div>}
             {error && <div className="text-sm text-red-600">Error: {error}</div>}

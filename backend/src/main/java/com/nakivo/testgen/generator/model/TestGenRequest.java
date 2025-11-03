@@ -1,4 +1,4 @@
-package com.nakivo.testgen.model;
+package com.nakivo.testgen.generator.model;
 
 
 public class TestGenRequest {

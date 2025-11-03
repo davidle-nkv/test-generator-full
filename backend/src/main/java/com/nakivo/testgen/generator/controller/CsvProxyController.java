@@ -1,17 +1,12 @@
-package com.nakivo.testgen.controller;
+package com.nakivo.testgen.generator.controller;
 
 
-import com.nakivo.testgen.service.CsvProxyService;
-import org.springframework.http.HttpStatus;
+import com.nakivo.testgen.generator.service.CsvProxyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/files")

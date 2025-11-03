@@ -1,7 +1,7 @@
-package com.nakivo.testgen.controller;
+package com.nakivo.testgen.generator.controller;
 
-import com.nakivo.testgen.model.TestGenRequest;
-import com.nakivo.testgen.service.TestFileGeneratorService;
+import com.nakivo.testgen.generator.model.TestGenRequest;
+import com.nakivo.testgen.generator.service.TestFileGeneratorService;
 import freemarker.template.TemplateException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

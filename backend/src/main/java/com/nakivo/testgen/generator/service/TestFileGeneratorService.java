@@ -1,7 +1,6 @@
-package com.nakivo.testgen.service;
+package com.nakivo.testgen.generator.service;
 
 
-import com.nakivo.testgen.utils.GitHubUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
