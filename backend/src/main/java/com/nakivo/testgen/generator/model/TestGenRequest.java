@@ -23,5 +23,5 @@ public class TestGenRequest {
 
     public String getTestData() { return testData; }
     public void setTestData(String testData) { this.testData = testData; }
-
+    
 }

@@ -1,8 +1,9 @@
-package com.nakivo.testgen.generator.service;
+package com.nakivo.testgen.github.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nakivo.testgen.config.GitHubConfig;
+import com.nakivo.testgen.utils.Constants;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

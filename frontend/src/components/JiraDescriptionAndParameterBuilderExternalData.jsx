@@ -161,9 +161,34 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
         return `${metaHeader}\n\n${stepLines}`;
     }, [selected, meta]);
 
+    // const jsonOutput = useMemo(() => {
+    //     const arr = selected.map((s) => {
+    //         const paramObj = {};
+    //         (s.parameters || []).forEach((p) => {
+    //             let val = p.defaultValue;
+    //             if (p.type === "number") {
+    //                 const n = Number(p.defaultValue);
+    //                 val = Number.isNaN(n) ? p.defaultValue : n;
+    //             } else if (p.type === "boolean") {
+    //                 if (typeof p.defaultValue === "string") val = p.defaultValue === "true";
+    //                 else val = !!p.defaultValue;
+    //             }
+    //             paramObj[p.text || p.id] = val;
+    //         });
+    //
+    //         return { stepText: s.text, parameters: paramObj };
+    //     });
+    //     return JSON.stringify(arr, null, 2);
+    // }, [selected]);
+
+
+
     const jsonOutput = useMemo(() => {
-        const arr = selected.map((s) => {
-            const paramObj = {};
+        const paramObj = {
+            "ID": meta.id || ""
+        };
+
+        selected.forEach((s) => {
             (s.parameters || []).forEach((p) => {
                 let val = p.defaultValue;
                 if (p.type === "number") {
@@ -175,10 +200,9 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                 }
                 paramObj[p.text || p.id] = val;
             });
-
-            return { stepText: s.text, parameters: paramObj };
         });
-        return JSON.stringify(arr, null, 2);
+
+        return JSON.stringify([paramObj], null, 2);
     }, [selected]);
 
     const copyToClipboard = async (text) => {
@@ -234,12 +258,12 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
     return (
         <div className="max-w-6xl mx-auto p-6">
             <header className="mb-6">
-                <h1 className="text-2xl font-semibold text-gray-900">Jira Description Builder (CSV-backed)</h1>
-                <p className="text-sm text-gray-500 mt-1">Steps are loaded from <code>/step-mapping.csv</code>. Parameter templates are loaded from <code>/parameters.csv</code>. Add parameters from templates or create custom ones.</p>
+                <h1 className="text-2xl font-semibold text-gray-900">Jira Description Builder</h1>
+                <p className="text-sm text-gray-500 mt-1">Steps are loaded from <code>shared-data/step-mappings.csv</code>.Parameters are loaded from <code>shared-data/test-data-field-description.csv</code>. (From QA's Github)</p>
             </header>
 
             {/* Jira ticket input */}
-            <div className="mb-6 flex items-center gap-3">
+            <div className="mb-2 flex items-center gap-3">
                 <input
                     type="text"
                     value={jiraTicket}
@@ -256,12 +280,12 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                     {updating ? "Updating..." : "Update Jira"}
                 </button>
             </div>
-            {updateMsg && <div className="text-sm text-gray-600 mb-4">{updateMsg}</div>}
+            {updateMsg && <div className="text-sm text-gray-600 mb-2">{updateMsg}</div>}
 
             {loading && <div className="text-sm text-gray-500">Loading steps and parameters...</div>}
             {error && <div className="text-sm text-red-600">Error: {error}</div>}
 
-            <div className="mt-4">
+            <div className="mt-8">
                 <div className="flex items-center justify-between mb-2">
                     <label>Metadata</label>
                 </div>
@@ -283,7 +307,12 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
+            <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
+                    <label>Steps Selection</label>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* LEFT Pane */}
                 <div className="col-span-1 bg-white border rounded-lg shadow-sm p-4">
                     <div className="flex items-center gap-3 mb-3">
@@ -462,28 +491,28 @@ export default function JiraDescriptionAndParameterBuilderExternalData() {
                         </DragDropContext>
                     </div>
 
-                    {/* Generated Description */}
-                    <div className="mt-4">
-                        <div className="flex items-center justify-between mb-2">
-                            <label>Generated Description</label>
-                            <button onClick={() => copyToClipboard(description)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md shadow hover:bg-blue-700 transition" title="Copy description"><FiCopy className="w-4 h-4" /> Copy Description</button>
-                        </div>
-                        <textarea value={description} readOnly className="w-full p-3 rounded-md border resize-none h-40 bg-white text-sm text-gray-800 focus:ring-2 focus:ring-blue-200" />
-                        <div className="mt-2 text-xs text-gray-500">Copy the description into Jira’s description field.</div>
-                    </div>
-
-                    {/* Parameters JSON */}
-                    <div className="mt-4">
-                        <div className="flex items-center justify-between mb-2">
-                            <label>Parameters JSON (Automation)</label>
-                            <div className="flex items-center gap-2">
-                                <button onClick={() => copyToClipboard(jsonOutput)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition"><FiCopy className="w-4 h-4" /> Copy JSON</button>
-                            </div>
-                        </div>
-                        <textarea value={jsonOutput} readOnly className="w-full p-3 rounded-md border resize-none h-50 bg-white text-sm text-gray-800 focus:ring-2 focus:ring-blue-200 font-mono" />
-                    </div>
-
                 </div>
+            </div>
+
+            {/* Generated Description */}
+            <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
+                    <label>Generated Description</label>
+                    <button onClick={() => copyToClipboard(description)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md shadow hover:bg-blue-700 transition" title="Copy description"><FiCopy className="w-4 h-4" /> Copy Description</button>
+                </div>
+                <textarea value={description} readOnly className="w-full p-3 rounded-md border resize-none h-50 bg-white text-sm text-gray-800 focus:ring-2 focus:ring-blue-200" />
+                {/*<div className="mt-2 text-xs text-gray-500">Copy the description into Jira’s description field.</div>*/}
+            </div>
+
+            {/* Parameters JSON */}
+            <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
+                    <label>Parameters JSON (Automation)</label>
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => copyToClipboard(jsonOutput)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition"><FiCopy className="w-4 h-4" /> Copy JSON</button>
+                    </div>
+                </div>
+                <textarea value={jsonOutput} readOnly className="w-full p-3 rounded-md border resize-none h-50 bg-white text-sm text-gray-800 focus:ring-2 focus:ring-blue-200 font-mono" />
             </div>
         </div>
     );

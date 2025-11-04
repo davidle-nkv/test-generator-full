@@ -1,5 +1,6 @@
 package com.nakivo.testgen.generator.service;
 
+import com.nakivo.testgen.github.service.GitHubFileService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

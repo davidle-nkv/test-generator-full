@@ -13,7 +13,7 @@
       description = "${id} - ${description}")
     public void ${id}() {
         try {
-            testData = TestData.getTestData(${firstGroup}, "${id}").get(0);
+            testData = TestData.getTestDataManual(${firstGroup}, "${id}").get(0);
 
 <#list steps as step>
             reportInfo("Step ${step_index + 1}: ${step.text}");

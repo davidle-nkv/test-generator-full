@@ -28,7 +28,7 @@ public class JiraController {
         String json = (String) payload.get("json");
 
         // Example: update Jira via REST API
-//        jiraService.updateDescription(ticket, description);
+        jiraService.updateDescription(ticket, description);
         jiraService.attachJsonFile(ticket, json);
 
         return ResponseEntity.ok(Map.of("status", "updated"));

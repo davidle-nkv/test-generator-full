@@ -1,6 +1,9 @@
 package com.nakivo.testgen.generator.service;
 
 
+import com.nakivo.testgen.github.service.GitHubFileService;
+import com.nakivo.testgen.github.service.GithubExcelUpdaterService;
+import com.nakivo.testgen.utils.TextParser;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -19,48 +22,32 @@ import java.util.stream.Collectors;
 public class TestFileGeneratorService {
 
     private final GitHubFileService gitHubFileService;
+    private final GithubExcelUpdaterService githubExcelUpdaterService;
 
     private static final String TEMPLATE_DIR = "templates";
     private static final String OUTPUT_DIR = "src/test/java/com/nakivo/tests/manual";
+    private static final String DATA_INPUT_MANUAL_PATH = "propertyfiles/ui/dataInputManual.xlsx";
 
-    public TestFileGeneratorService(GitHubFileService gitHubFileService) {
+    public TestFileGeneratorService(GitHubFileService gitHubFileService, GithubExcelUpdaterService githubExcelUpdaterService) {
         this.gitHubFileService = gitHubFileService;
+        this.githubExcelUpdaterService = githubExcelUpdaterService;
+    }
+
+    public void uploadDataInputManualToQARepo(String description, String testDataInput) {
+        try {
+            String sheetName = TextParser
+                .parseInputText(description).get("groups").toString()
+                .split(",")[0]
+                .replace("\"", "").trim();
+            githubExcelUpdaterService.updateExcelOnGithub(DATA_INPUT_MANUAL_PATH, sheetName, testDataInput);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Map<String, String> generateFromText(String textInput) throws IOException, TemplateException {
-        Map<String, Object> data = parseInputText(textInput);
+        Map<String, Object> data = TextParser.parseInputText(textInput);
         return generateTestContent(data);
-    }
-
-    private Map<String, Object> parseInputText(String text) throws IOException {
-        Map<String, Object> map = new HashMap<>();
-        List<String> steps = new ArrayList<>();
-
-        List<String> lines = Arrays.asList(text.split("\\r?\\n"));
-        for (String line : lines) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
-
-            if (line.toLowerCase().startsWith("title:")) {
-                map.put("title", line.substring(6).trim());
-            } else if (line.toLowerCase().startsWith("groups:")) {
-                map.put("groups", normalizeQuotedList(line.substring(7).trim()));
-            } else if (line.toLowerCase().startsWith("id:")) {
-                map.put("id", line.substring(3).trim());
-            } else if (line.toLowerCase().startsWith("category:")) {
-                map.put("category", line.substring(9).trim());
-            } else if (line.toLowerCase().startsWith("feature:")) {
-                map.put("feature", line.substring(8).trim());
-            } else if (line.toLowerCase().startsWith("step")) {
-                steps.add(line.replaceFirst("(?i)step\\s*\\d*[:\\-]\\s*", "").trim());
-            }
-        }
-
-        map.put("steps", steps);
-        if (!map.containsKey("title") || !map.containsKey("groups") || !map.containsKey("id")) {
-            throw new IllegalArgumentException("Input text missing required fields (id/title/groups).");
-        }
-        return map;
     }
 
     private Map<String, String> generateTestContent(Map<String, Object> data)
@@ -235,16 +222,6 @@ public class TestFileGeneratorService {
             if (sb.contains(s)) common++;
         }
         return (2.0 * common) / (sa.size() + sb.size());
-    }
-
-    public static String normalizeQuotedList(String input) {
-        if (input == null || input.isBlank()) return "";
-        return Arrays.stream(input.split(","))
-            .map(String::trim)
-            .map(s -> s.replaceAll("['\"]", ""))  // remove existing quotes
-            .filter(s -> !s.isEmpty())            // remove empty entries
-            .map(s -> "\"" + s + "\"")            // wrap with double quotes
-            .collect(Collectors.joining(", "));
     }
 
     /* Replace / append test method safely (brace-aware).

@@ -80,7 +80,10 @@ public class JiraService {
         File tempFile = null;
         try {
             try {
-                tempFile = Files.createTempFile("jira-", ".json").toFile();
+//                tempFile = Files.createTempFile("testData-" + issueKey, ".json").toFile();
+                // Create a file with a fixed name instead of random suffix
+                String fileName = "testData_" + issueKey + ".json";
+                tempFile = new File(System.getProperty("java.io.tmpdir"), fileName);
 
                 try (FileWriter writer = new FileWriter(tempFile)) {
                     writer.write(jsonContent);
