@@ -1,7 +1,7 @@
 Test Generator Full
 ==========================================
 Structure:
-  /backend  - Spring Boot (Gradle Groovy), Java 17
+  /backend  - Spring Boot (Gradle Groovy), Java 17+
   /frontend - React (Vite), Node 18+
 
 Quick start:
@@ -13,7 +13,6 @@ Quick start:
 
 2) Frontend
    - cd frontend
-   - npm install react-beautiful-dnd
    - npm install
    - npm run dev
    - Open http://localhost:3000
